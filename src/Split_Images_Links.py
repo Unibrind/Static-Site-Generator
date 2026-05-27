@@ -62,7 +62,6 @@ def split_nodes_link(old_nodes):
             
             new_nodes.append(TextNode(alt,TextType.LINK, link))
             original_text = sections[1]
-            original_text = sections[1]
         
         if original_text != "":
             new_nodes.append(TextNode(original_text, TextType.TEXT))

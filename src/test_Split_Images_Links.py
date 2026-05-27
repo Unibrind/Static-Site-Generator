@@ -1,6 +1,5 @@
 import unittest
 from textnode import TextNode, TextType
-# Assure-toi que le nom après "from" est bien le nom de ton fichier .py
 from Split_Images_Links import split_nodes_image, split_nodes_link
 
 class TestSplitNodes(unittest.TestCase):
@@ -38,7 +37,7 @@ class TestSplitNodes(unittest.TestCase):
             "Clique ici [Google](https://www.google.com) ou [Boot dev](https://www.boot.dev) pour apprendre.",
             TextType.TEXT,
         )
-        # Ici on appelle bien split_nodes_link
+        
         new_nodes = split_nodes_link([node])
         self.assertListEqual(
             [
