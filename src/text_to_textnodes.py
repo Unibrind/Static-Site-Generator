@@ -3,11 +3,12 @@ from split_nodes import split_nodes_delimiter
 from textnode import TextType, TextNode
 
 def text_to_textnodes(text):
-    new_nodes = [TextNode(text, TextType.TEXT)]
-    bold = split_nodes_delimiter(new_nodes,"**",TextType.BOLD)
-    italic = split_nodes_delimiter(bold,"_",TextType.ITALIC)
-    code = split_nodes_delimiter(italic,"`",TextType.CODE)
-    image = split_nodes_image(code)
-    link = split_nodes_link(image)
+    nodes = [TextNode(text, TextType.TEXT)]
     
-    return link
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    
+    return nodes
