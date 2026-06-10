@@ -1,8 +1,8 @@
 import os
-from markdown_to_html_node import markdown_to_html_node # Assure-toi d'importer tes fonctions
+from markdown_to_html_node import markdown_to_html_node
 from extract_title_markdown import extract_title
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath="/"):
     for entry in os.listdir(dir_path_content):
         from_path = os.path.join(dir_path_content, entry)
         
@@ -11,10 +11,11 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
                 dest_filename = entry.replace(".md", ".html")
                 dest_path = os.path.join(dest_dir_path, dest_filename)
                 
-                print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+                print(f"Generating page from {from_path} to {dest_path}")
                 
                 with open(from_path, "r", encoding="utf-8") as f:
                     markdown_content = f.read()
+                
                 with open(template_path, "r", encoding="utf-8") as f:
                     template_content = f.read()
                 
@@ -23,7 +24,11 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
                 
                 title = extract_title(markdown_content)
                 
-                final_html = template_content.replace("{{ Title }}", title).replace("{{ Content }}", html_content)
+                final_html = template_content.replace("{{ Title }}", title).replace("{{Title}}", title)
+                final_html = final_html.replace("{{ Content }}", html_content).replace("{{Content}}", html_content)
+                
+                final_html = final_html.replace('href="/', f'href="{basepath}')
+                final_html = final_html.replace('src="/', f'src="{basepath}')
                 
                 os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                 
@@ -32,4 +37,5 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
                     
         else:
             new_dest_dir = os.path.join(dest_dir_path, entry)
-            generate_pages_recursive(from_path, template_path, new_dest_dir)
+            # On passe aussi le basepath à l'appel récursif !
+            generate_pages_recursive(from_path, template_path, new_dest_dir, basepath)
