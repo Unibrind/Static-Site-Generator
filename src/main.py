@@ -1,8 +1,7 @@
 import os
 import shutil
 from textnode import TextType, TextNode
-from generate_page import generate_page
-
+from generate_pages_recursive import generate_pages_recursive
 def copy_static_recursive(source_dir, dest_dir):
     if not os.path.exists(dest_dir):
         os.mkdir(dest_dir)
@@ -24,10 +23,8 @@ def main():
     print(node)
     print("---------------------\n")
 
-
     source = "static"
     destination = "public"
-    
     
     if os.path.exists(destination):
         print(f"Nettoyage du dossier {destination}...")
@@ -37,7 +34,10 @@ def main():
     copy_static_recursive(source, destination)
     print("Copie terminée avec succès !")
     
-    generate_page("content/index.md", "template.html", "public/index.html")
+    print("\nGénération de toutes les pages du site...")
+    generate_pages_recursive("content", "template.html", "public")
+    
+    print("\nTout le site web a été généré avec succès !")
 
 if __name__ == "__main__":
     main()
